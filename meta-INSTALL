@@ -1,0 +1,8 @@
+This is how to install a project based on snowshoveler.  Pretend you're
+making a project named "wendy"::
+
+    $ unzip snowshoveler.zip
+    $ find -name snowshoveler | xargs rename 's/snowshoveler/wendy/'
+    $ find -type f | xargs sed -i 's/snowshoveler/wendy/g'
+
+.. vim: set syntax=rst:

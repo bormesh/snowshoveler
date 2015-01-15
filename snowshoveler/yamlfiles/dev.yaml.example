@@ -1,0 +1,74 @@
+app:
+    secret:                     2908 Coleridge
+    host:                       snowshoveler
+    scheme:                     http
+    launch_debugger_on_error:   False
+
+smtp:
+    host: &smtphost  localhost
+
+postgresql:
+    database:   snowshoveler_dev
+    host:       localhost
+    port:       5432
+    user:       snowshoveler
+    password:   fr1pp3ry
+
+logging:
+
+    default: &defaultlogging
+
+        # This is the catch-all.
+        # root:
+        #     level: DEBUG
+        #     handlers: [console, tmpfile]
+
+        loggers:
+            snowshoveler: &snowshovelerlogging
+                propagate: False
+                level: DEBUG
+                handlers: [console, tmpfile]
+
+            werkzeug: *snowshovelerlogging
+
+            horsemeat: *snowshovelerlogging
+
+        disable_existing_loggers: false
+
+        version: 1
+
+        handlers:
+
+            console:
+                class: logging.StreamHandler
+                level: DEBUG
+                formatter: consolefmt
+
+            tmpfile:
+                class: logging.FileHandler
+                filename: /tmp/snowshoveler.log
+                mode: a
+                level: DEBUG
+                formatter: consolefmt
+
+            email:
+                level: CRITICAL
+                formatter: consolefmt
+                class: logging.handlers.SMTPHandler
+                mailhost: *smtphost
+
+                fromaddr: snowshoveler@snowshoveler.216software.com
+
+                toaddrs:
+                    - info@216software.com
+
+                subject: production error
+
+        formatters:
+            consolefmt:
+                format: '%(asctime)-22s [%(process)d] %(name)-30s %(lineno)-5d %(levelname)-8s %(message)s'
+
+    script: *defaultlogging
+
+
+# vim: set filetype=yaml :
